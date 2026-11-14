@@ -74,7 +74,9 @@
                     <button onclick="jumpStage(11)" class="px-2.5 py-1 rounded-md bg-slate-800 hover:bg-slate-700 text-amber-300 cursor-pointer">SHS (G11–12)</button>
                 </div>
             </div>
-            <div id="gradeSelector" class="flex items-center gap-2 overflow-x-auto no-scrollbar py-1"></div>
+            <div id="gradeSelector" class="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
+                <!-- Dynamically populated via JavaScript -->
+            </div>
         </section>
 
         <!-- Dual Feature Grid -->
@@ -88,9 +90,12 @@
                             <span class="text-lg">📚</span>
                             <h2 id="academicCardHeader" class="font-extrabold text-sm tracking-wider uppercase text-sky-300">Grade 11 Academic Catch-Up</h2>
                         </div>
-                        <span id="stageBadge" class="text-[10px] font-bold text-sky-200 bg-sky-950/90 px-2.5 py-0.5 rounded-full border border-sky-700">Senior High School</span>
+                        <span id="stageBadge" class="text-[10px] font-bold text-sky-200 bg-sky-950/90 px-2.5 py-0.5 rounded-full border border-sky-700">
+                            Senior High School
+                        </span>
                     </div>
 
+                    <!-- 3 Subject Tiles -->
                     <div class="grid grid-cols-3 gap-2.5">
                         <button onclick="selectSubject('math')" id="sub-math" class="subject-btn group relative bg-sky-900/50 border-2 border-sky-400 rounded-xl p-3 flex flex-col items-center justify-center gap-1.5 transition cursor-pointer">
                             <div class="w-10 h-10 rounded-lg bg-sky-500/20 flex items-center justify-center text-sky-300 font-bold text-lg">±%</div>
@@ -111,6 +116,7 @@
                         </button>
                     </div>
 
+                    <!-- Featured Active Lesson Box -->
                     <div class="bg-slate-950/75 border border-sky-500/30 rounded-xl p-4 space-y-3">
                         <div class="flex items-start justify-between gap-2">
                             <div>
@@ -122,8 +128,11 @@
                             </button>
                         </div>
 
-                        <p id="featuredShortDesc" class="text-xs text-slate-300 leading-relaxed">Bridges foundational competencies directly with step-by-step worked solutions.</p>
+                        <p id="featuredShortDesc" class="text-xs text-slate-300 leading-relaxed">
+                            Bridges foundational competencies directly with step-by-step worked solutions.
+                        </p>
 
+                        <!-- Progress Bar -->
                         <div class="space-y-1">
                             <div class="flex justify-between text-[11px] font-semibold">
                                 <span class="text-slate-400">Mastery & Self-Check Quiz</span>
@@ -154,7 +163,9 @@
                             <span class="text-lg">🏛️</span>
                             <h2 class="font-extrabold text-sm tracking-wider uppercase text-amber-300">Local Heritage Archives</h2>
                         </div>
-                        <span class="text-[10px] font-bold text-amber-200 bg-amber-950/90 px-2.5 py-0.5 rounded-full border border-amber-700">IKSP • EDCOM II</span>
+                        <span class="text-[10px] font-bold text-amber-200 bg-amber-950/90 px-2.5 py-0.5 rounded-full border border-amber-700">
+                            IKSP • EDCOM II
+                        </span>
                     </div>
 
                     <div class="grid grid-cols-3 gap-2 pt-1">
@@ -233,19 +244,22 @@
             </button>
         </div>
     </nav>
-
-    <!-- Modal Container -->
+        <!-- Modal Container -->
     <div id="appModal" class="fixed inset-0 bg-black/85 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
         <div class="bg-[#131b29] border border-slate-700 rounded-2xl max-w-2xl w-full p-6 space-y-4 shadow-2xl max-h-[90vh] overflow-y-auto">
             <div class="flex items-start justify-between gap-3 border-b border-slate-800 pb-3">
                 <div>
-                    <span id="modalBadge" class="text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">Verified Module</span>
+                    <span id="modalBadge" class="text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
+                        Verified Module
+                    </span>
                     <h3 id="modalTitle" class="text-xl font-extrabold text-white mt-2">Lesson Title</h3>
                 </div>
                 <button onclick="closeModal()" class="w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center font-bold cursor-pointer">✕</button>
             </div>
 
-            <div id="modalBody" class="text-sm text-slate-300 leading-relaxed space-y-4"></div>
+            <div id="modalBody" class="text-sm text-slate-300 leading-relaxed space-y-4">
+                <!-- Dynamic Content -->
+            </div>
 
             <div class="pt-3 border-t border-slate-800 flex flex-wrap justify-between items-center gap-2">
                 <span id="modalCreditFooter" class="text-[10px] text-slate-400">Verified Peer & Faculty Content</span>
@@ -262,4 +276,448 @@
         let currentGrade = 11;
         let currentSubject = 'math';
         let offlineActive = true;
-     
+        let progressData = JSON.parse(localStorage.getItem('kulturaAralProgress')) || {};
+
+        const curriculumDB = {
+            1: {
+                stage: "Key Stage 1 • Elementary",
+                math: {
+                    code: "DepEd MATATAG Math 1",
+                    title: "Place Value & Bundling Tens and Ones",
+                    size: "95 KB",
+                    shortDesc: "Visualizing numbers up to 100 using everyday objects.",
+                    explanation: "Every 2-digit number is made of tens and ones. For example, 47 has 4 tens and 7 ones.",
+                    workedExample: "3 bundles of 10 + 6 single items = 36 total.",
+                    quizQ: "What is the value of the digit 8 in the number 84?",
+                    options: ["8", "80", "40"],
+                    correctIdx: 1,
+                    credit: "Source: DepEd MATATAG Math 1 (2023)"
+                },
+                science: {
+                    code: "DepEd Science 1",
+                    title: "Basic Needs of Plants & Local Crops",
+                    size: "110 KB",
+                    shortDesc: "Understanding sunlight, water, air, and soil.",
+                    explanation: "Plants need sunlight, water, air, and soil nutrients to grow healthy.",
+                    workedExample: "Seeds need sunlight and water to sprout green leaves.",
+                    quizQ: "Which plant part absorbs water from soil?",
+                    options: ["Leaves", "Roots", "Flowers"],
+                    correctIdx: 1,
+                    credit: "Source: DepEd Science Framework"
+                },
+                literacy: {
+                    code: "DepEd Literacy 1",
+                    title: "Phonemic Awareness & Syllables (Pantig)",
+                    size: "88 KB",
+                    shortDesc: "Blending consonant-vowel syllables for reading fluency.",
+                    explanation: "Words are built from syllables: ba-hay (2 claps), pa-mil-ya (3 claps).",
+                    workedExample: "ma + ta = mata | ku + bo = kubo.",
+                    quizQ: "How many syllables are in 'pa-mil-ya'?",
+                    options: ["2", "3", "4"],
+                    correctIdx: 1,
+                    credit: "Source: DepEd MATATAG Reading"
+                }
+            },
+            7: {
+                stage: "Key Stage 3 • Junior High",
+                math: {
+                    code: "DepEd MATATAG Math 7",
+                    title: "Operations on Integers & Variables",
+                    size: "145 KB",
+                    shortDesc: "Mastering negative numbers and algebra fundamentals.",
+                    explanation: "Negative multiplied by negative gives a positive: (-4) × (-3) = +12.",
+                    workedExample: "Solve (-18) ÷ (-3) + (-5) = 6 - 5 = 1.",
+                    quizQ: "What is (-6) × (-4) - 10?",
+                    options: ["-34", "14", "-14"],
+                    correctIdx: 1,
+                    credit: "Source: DepEd MATATAG Math 7"
+                },
+                science: {
+                    code: "DepEd Science 7",
+                    title: "Scientific Investigation & Variables",
+                    size: "138 KB",
+                    shortDesc: "Independent, dependent, and controlled variables.",
+                    explanation: "Independent is what you change; dependent is what you measure.",
+                    workedExample: "Testing fertilizer amount on plant height.",
+                    quizQ: "What is the dependent variable in a test of study time vs. test score?",
+                    options: ["Study hours", "Quiz score", "Pen type"],
+                    correctIdx: 1,
+                    credit: "Source: DepEd Science 7"
+                },
+                literacy: {
+                    code: "DepEd English 7",
+                    title: "Paragraph Structuring (PEEL)",
+                    size: "120 KB",
+                    shortDesc: "Point, Evidence, Explanation, Link.",
+                    explanation: "Start with a topic sentence followed by factual evidence and explanation.",
+                    workedExample: "Point → Evidence (PIDS, 2023) → Explanation.",
+                    quizQ: "What does the 'E' in PEEL stand for?",
+                    options: ["Exaggeration", "Evidence & Explanation", "Entertainment"],
+                    correctIdx: 1,
+                    credit: "Source: DepEd English 7"
+                }
+            },
+            11: {
+                stage: "Key Stage 4 • Senior High",
+                math: {
+                    code: "DepEd SHS General Math",
+                    title: "Functions & Rational Models",
+                    size: "165 KB",
+                    shortDesc: "Bridges JHS factoring into SHS functions and domains.",
+                    explanation: "For rational functions f(x) = p(x)/q(x), set denominator q(x) = 0 to find vertical asymptotes.",
+                    workedExample: "For f(x) = 10 / (x - 5), x cannot equal 5.",
+                    quizQ: "What value of x is excluded from f(x) = 10 / (x + 4)?",
+                    options: ["x = 4", "x = -4", "x = 10"],
+                    correctIdx: 1,
+                    credit: "Source: DepEd SHS General Mathematics"
+                },
+                science: {
+                    code: "DepEd SHS Earth & Life",
+                    title: "Biogeochemical Cycles & Climate Resilience",
+                    size: "160 KB",
+                    shortDesc: "Connecting Earth's subsystems to local ecology.",
+                    explanation: "Forests and mangroves naturally sequester carbon and buffer storm surges.",
+                    workedExample: "Composting campus waste returns nutrients directly to soil.",
+                    quizQ: "Which subsystem includes all water bodies?",
+                    options: ["Lithosphere", "Hydrosphere", "Atmosphere"],
+                    correctIdx: 1,
+                    credit: "Source: DepEd Earth & Life Science"
+                },
+                literacy: {
+                    code: "DepEd SHS Practical Research 1",
+                    title: "Qualitative & Quantitative Frameworks",
+                    size: "145 KB",
+                    shortDesc: "Formulating SOPs and ethical interview guides.",
+                    explanation: "Qualitative research explores lived experiences and cultural narratives.",
+                    workedExample: "Using informed consent before conducting elder interviews.",
+                    quizQ: "Which design is best for documenting elder oral histories?",
+                    options: ["Qualitative Ethnography", "Lab Titration", "Drug Trial"],
+                    correctIdx: 0,
+                    credit: "Source: DepEd Practical Research"
+                }
+            }
+        };
+
+        for (let i = 1; i <= 12; i++) {
+            if (!curriculumDB[i]) {
+                curriculumDB[i] = {
+                    stage: i <= 6 ? "Elementary" : (i <= 10 ? "Junior High School" : "Senior High School"),
+                    math: { code: `DepEd Math ${i}`, title: `Grade ${i} Core Mathematics Competencies`, size: "120 KB", shortDesc: `Core problem-solving module aligned with Grade ${i} standards.`, explanation: `Step-by-step mathematical reasoning and applied problem-solving for Grade ${i}.`, workedExample: `Applied practice problem with step-by-step solution.`, quizQ: `What is the primary focus of this Grade ${i} math module?`, options: ["Applied problem solving", "Random guessing", "None"], correctIdx: 0, credit: `DepEd Curriculum Guide Grade ${i}` },
+                    science: { code: `DepEd Science ${i}`, title: `Grade ${i} Applied Science Concepts`, size: "125 KB", shortDesc: `Scientific inquiry and investigation for Grade ${i}.`, explanation: `Understanding natural phenomena and scientific laws through local applications.`, workedExample: `Experimental observation and data collection.`, quizQ: `Why is empirical testing important in science?`, options: ["It verifies facts with evidence", "It relies on rumor", "It skips data"], correctIdx: 0, credit: `DepEd Science Guide Grade ${i}` },
+                    literacy: { code: `DepEd English/Research ${i}`, title: `Grade ${i} Critical Reading & Communication`, size: "115 KB", shortDesc: `Reading comprehension and writing structured arguments.`, explanation: `Analyzing text structure, context clues, and evidence-based writing.`, workedExample: `Identifying main ideas and citing sources correctly.`, quizQ: `What makes a written source reliable?`, options: ["Verifiable institutional evidence", "Anonymous posts", "Uncited rumors"], correctIdx: 0, credit: `DepEd English Guide Grade ${i}` }
+                };
+            }
+        }
+                const heritageDB = {
+            muyong: { region: "Ifugao", title: "Ifugao Muyong Forest & Gravity Irrigation", stemLink: "Watershed Ecology & Fluid Mechanics", story: "Communal family forests above rice terraces capture rain and feed stone irrigation channels naturally without pumps.", elderInsight: "Protect the forest above so the water below never runs dry.", citation: "Ilagan (2024); UNESCO World Heritage" },
+            inabel: { region: "Ilocos Norte", title: "Inabel Weaving & Ethnomathematics", stemLink: "Geometry, Ratios & Symmetry", story: "Weavers calculate thread counts and geometric tessellations entirely through spatial memory.", elderInsight: "Connecting math tessellations to living Filipino arts.", citation: "NCCA Living Traditions; Ilagan (2024)" },
+            atsara: { region: "Quezon", title: "Biochemistry of Acid Preservation in Atsara", stemLink: "pH, Osmosis & Microbiology", story: "Salting draws out water while acetic acid lowers pH below 4.6 to halt bacteria safely.", elderInsight: "Traditional preservation is applied food microbiology.", citation: "Philippine Food Heritage Science" },
+            baybayin: { region: "Pre-Colonial Philippines", title: "Baybayin Syllabary & Oral Epics", stemLink: "Linguistics & Phonetics", story: "Indigenous abugida scripts reflecting pre-colonial literacy and poetic traditions.", elderInsight: "Preserving regional scripts counters cultural disconnection.", citation: "National Museum; EDCOM II (2026)" },
+            balangay: { region: "Butuan", title: "Butuan Balangay Boatbuilding", stemLink: "Buoyancy & Torque Physics", story: "Lashed-lug plank joinery creates flexible hulls that absorb ocean wave impacts.", elderInsight: "Early maritime engineering mastery across islands.", citation: "National Museum Archaeological Sites" }
+        };
+
+        function initGradeSelector() {
+            const container = document.getElementById('gradeSelector');
+            container.innerHTML = '';
+            for (let g = 1; g <= 12; g++) {
+                const btn = document.createElement('button');
+                btn.id = `grade-pill-${g}`;
+                btn.onclick = () => selectGrade(g);
+                btn.innerText = `Grade ${g}`;
+                container.appendChild(btn);
+            }
+            updateGradeUI();
+        }
+
+        function jumpStage(gNum) {
+            selectGrade(gNum);
+            document.getElementById(`grade-pill-${gNum}`).scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        }
+
+        function selectGrade(gNum) {
+            currentGrade = gNum;
+            updateGradeUI();
+        }
+
+        function updateGradeUI() {
+            for (let g = 1; g <= 12; g++) {
+                const pill = document.getElementById(`grade-pill-${g}`);
+                if (g === currentGrade) {
+                    pill.className = "px-3.5 py-1.5 rounded-full text-xs font-extrabold tracking-wide bg-emerald-500 text-slate-950 shadow-md shrink-0 transition cursor-pointer";
+                } else {
+                    pill.className = "px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-wide bg-slate-900 text-slate-300 border border-slate-700 hover:border-sky-400/50 shrink-0 transition cursor-pointer";
+                }
+            }
+
+            const gradeObj = curriculumDB[currentGrade];
+            const lesson = gradeObj[currentSubject];
+
+            document.getElementById('headerSubtitle').innerHTML = `Manila, PH <span class="text-slate-600 mx-1">|</span> Grade ${currentGrade}`;
+            document.getElementById('academicCardHeader').innerText = `Grade ${currentGrade} Academic Catch-Up`;
+            document.getElementById('stageBadge').innerText = gradeObj.stage;
+
+            ['math', 'science', 'literacy'].forEach(sub => {
+                const el = document.getElementById(`sub-${sub}`);
+                const chk = document.getElementById(`check-${sub}`);
+                const key = `G${currentGrade}_${sub}`;
+                const pct = progressData[key] || 0;
+
+                if (pct >= 100) {
+                    chk.innerText = "✓";
+                    chk.className = "absolute -bottom-1.5 -right-1.5 w-4 h-4 rounded-full bg-emerald-500 text-[10px] flex items-center justify-center text-slate-950 font-bold";
+                } else {
+                    chk.innerText = "•";
+                    chk.className = "absolute -bottom-1.5 -right-1.5 w-4 h-4 rounded-full bg-slate-700 text-[10px] flex items-center justify-center text-slate-300 font-bold";
+                }
+
+                if (sub === currentSubject) {
+                    el.classList.add('border-2', 'border-sky-400', 'bg-sky-900/50');
+                    el.classList.remove('border', 'bg-slate-900/60');
+                } else {
+                    el.classList.remove('border-2', 'border-sky-400', 'bg-sky-900/50');
+                    el.classList.add('border', 'bg-slate-900/60');
+                }
+            });
+
+            const activeKey = `G${currentGrade}_${currentSubject}`;
+            const activePct = progressData[activeKey] || 0;
+
+            document.getElementById('featuredCode').innerText = lesson.code;
+            document.getElementById('featuredTitle').innerText = lesson.title;
+            document.getElementById('featuredSize').innerText = lesson.size;
+            document.getElementById('featuredShortDesc').innerText = lesson.shortDesc;
+            document.getElementById('featuredPercent').innerText = `${activePct}%`;
+            document.getElementById('featuredBar').style.width = `${activePct}%`;
+        }
+
+        function selectSubject(sub) {
+            currentSubject = sub;
+            updateGradeUI();
+        }
+
+        function speakLessonText(txt) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(txt);
+                utterance.rate = 0.96;
+                const statusEl = document.getElementById('audioStatus');
+                if (statusEl) statusEl.innerText = "🔊 Playing Offline Voice Lecture...";
+                utterance.onend = () => { if (statusEl) statusEl.innerText = "✅ Audio Lecture Finished"; };
+                window.speechSynthesis.speak(utterance);
+            } else {
+                alert("Speech synthesis is not supported on this browser.");
+            }
+        }
+
+        function stopAudio() {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const statusEl = document.getElementById('audioStatus');
+                if (statusEl) statusEl.innerText = "⏹️ Audio Paused";
+            }
+        }
+
+        function playRealLesson() {
+            stopAudio();
+            const lesson = curriculumDB[currentGrade][currentSubject];
+            const activeKey = `G${currentGrade}_${currentSubject}`;
+
+            document.getElementById('modalBadge').innerText = `Grade ${currentGrade} • Verified Offline Module`;
+            document.getElementById('modalTitle').innerText = lesson.title;
+            document.getElementById('modalCreditFooter').innerText = lesson.credit;
+
+            const script = `Grade ${currentGrade} ${currentSubject}: ${lesson.title}. ${lesson.explanation} Example: ${lesson.workedExample}`;
+
+            let opts = lesson.options.map((opt, idx) => `
+                <button onclick="checkQuizAnswer(${idx}, ${lesson.correctIdx}, '${activeKey}')" class="w-full text-left px-3.5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs font-semibold text-slate-200 transition cursor-pointer">
+                    ${String.fromCharCode(65 + idx)}. ${opt}
+                </button>
+            `).join('');
+
+            document.getElementById('modalBody').innerHTML = `
+                <div class="bg-emerald-950/40 border border-emerald-500/30 rounded-xl p-3.5 flex flex-wrap items-center justify-between gap-2">
+                    <div>
+                        <div id="audioStatus" class="text-xs font-extrabold text-emerald-300">🎧 Offline Audio Summary Ready</div>
+                        <div class="text-[11px] text-emerald-100/70">Uses device speech engine</div>
+                    </div>
+                    <div class="flex gap-1.5">
+                        <button onclick="speakLessonText(\`${script.replace(/`/g, "'")}\`)" class="px-3 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-xs cursor-pointer">▶ Listen</button>
+                        <button onclick="stopAudio()" class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs cursor-pointer">⏹</button>
+                    </div>
+                </div>
+                <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-4 space-y-2">
+                    <div class="text-xs font-extrabold uppercase tracking-wider text-sky-400">1. Core Concept</div>
+                    <p class="text-xs text-slate-200 leading-relaxed">${lesson.explanation}</p>
+                </div>
+                <div class="bg-slate-900/90 border border-sky-500/20 rounded-xl p-4 space-y-2">
+                    <div class="text-xs font-extrabold uppercase tracking-wider text-amber-300">2. Worked Example</div>
+                    <p class="text-xs font-mono text-emerald-300 bg-slate-950 p-3 rounded-lg leading-relaxed">${lesson.workedExample}</p>
+                </div>
+                <div class="bg-slate-950/80 border border-slate-800 rounded-xl p-4 space-y-2.5">
+                    <div class="text-xs font-extrabold uppercase tracking-wider text-purple-300">3. Quick Mastery Check</div>
+                    <p class="text-xs font-bold text-white">${lesson.quizQ}</p>
+                    <div class="space-y-1.5">${opts}</div>
+                    <div id="quizFeedback" class="text-xs font-bold pt-1"></div>
+                </div>
+            `;
+
+            document.getElementById('modalActionBtn').innerText = "Mark Complete (100%)";
+            document.getElementById('modalActionBtn').onclick = () => {
+                progressData[activeKey] = 100;
+                localStorage.setItem('kulturaAralProgress', JSON.stringify(progressData));
+                updateGradeUI();
+                closeModal();
+            };
+            showModal();
+        }
+
+        function checkQuizAnswer(selectedIdx, correctIdx, storageKey) {
+            const fb = document.getElementById('quizFeedback');
+            if (selectedIdx === correctIdx) {
+                fb.innerHTML = `<span class="text-emerald-400">✅ Correct! Progress saved at 100%.</span>`;
+                progressData[storageKey] = 100;
+                localStorage.setItem('kulturaAralProgress', JSON.stringify(progressData));
+                updateGradeUI();
+            } else {
+                fb.innerHTML = `<span class="text-amber-400">💡 Try again! Review the worked example above.</span>`;
+            }
+        }
+
+        function openHeritageStory(key) {
+            stopAudio();
+            const item = heritageDB[key];
+            document.getElementById('modalBadge').innerText = `IKSP Archive • ${item.region}`;
+            document.getElementById('modalTitle').innerText = item.title;
+            document.getElementById('modalCreditFooter').innerText = item.citation;
+
+            const spoken = `${item.title}, from ${item.region}. ${item.story} ${item.elderInsight}`;
+
+            document.getElementById('modalBody').innerHTML = `
+                <div class="bg-amber-950/40 border border-amber-500/30 rounded-xl p-3.5 flex flex-wrap items-center justify-between gap-2">
+                    <div>
+                        <div id="audioStatus" class="text-xs font-extrabold text-amber-300">🎙️ Elder & Cultural Field Notes Audio</div>
+                        <div class="text-[11px] text-amber-100/70">${item.stemLink}</div>
+                    </div>
+                    <div class="flex gap-1.5">
+                        <button onclick="speakLessonText(\`${spoken.replace(/`/g, "'")}\`)" class="px-3 py-1.5 rounded-lg bg-amber-400 hover:bg-amber-300 text-slate-950 font-extrabold text-xs cursor-pointer">▶ Play Story</button>
+                        <button onclick="stopAudio()" class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs cursor-pointer">⏹</button>
+                    </div>
+                </div>
+                <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 space-y-2">
+                    <div class="text-xs font-extrabold uppercase tracking-wider text-amber-300">Context</div>
+                    <p class="text-xs text-slate-200 leading-relaxed">${item.story}</p>
+                </div>
+                <div class="bg-slate-950 border border-amber-500/20 rounded-xl p-3.5 text-xs text-amber-200 italic">
+                    "${item.elderInsight}"
+                </div>
+            `;
+            document.getElementById('modalActionBtn').innerText = "Save to Offline Roots";
+            document.getElementById('modalActionBtn').onclick = closeModal;
+            showModal();
+        }
+
+        function openCitationsModal() {
+            stopAudio();
+            document.getElementById('modalBadge').innerText = "Bibliography";
+            document.getElementById('modalTitle').innerText = "Research Citations & Credits";
+            document.getElementById('modalCreditFooter').innerText = "Kultura-Aral SDG 4";
+            document.getElementById('modalBody').innerHTML = `
+                <ul class="space-y-2.5 text-xs text-slate-300">
+                    <li class="bg-slate-900 p-3 rounded-xl border border-slate-800"><strong class="text-sky-300">DepEd K–12 / MATATAG:</strong> Curriculum standards (Grades 1–12).</li>
+                    <li class="bg-slate-900 p-3 rounded-xl border border-slate-800"><strong class="text-sky-300">EDCOM II (2026):</strong> National assessment on curriculum gaps.</li>
+                    <li class="bg-slate-900 p-3 rounded-xl border border-slate-800"><strong class="text-sky-300">PIDS (2023):</strong> Infrastructure and regional public school disparities.</li>
+                    <li class="bg-slate-900 p-3 rounded-xl border border-slate-800"><strong class="text-amber-300">Ilagan (2024):</strong> Indigenous Knowledge Systems and Practices (IKSP).</li>
+                    <li class="bg-slate-900 p-3 rounded-xl border border-slate-800"><strong class="text-emerald-300">World Bank (2020) & UNESCO SDG 4:</strong> Inclusive quality education.</li>
+                </ul>
+            `;
+            document.getElementById('modalActionBtn').innerText = "Close";
+            document.getElementById('modalActionBtn').onclick = closeModal;
+            showModal();
+        }
+
+        function openUploadModal() {
+            stopAudio();
+            document.getElementById('modalBadge').innerText = "Community Exchange";
+            document.getElementById('modalTitle').innerText = "Contribute a Lesson or Story";
+            document.getElementById('modalCreditFooter').innerText = "Peer Verified";
+            document.getElementById('modalBody').innerHTML = `
+                <div class="space-y-3">
+                    <p class="text-xs text-slate-300">Contribute notes or document local wisdom:</p>
+                    <input id="upTitle" type="text" placeholder="Module Title" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white">
+                    <textarea id="upDesc" rows="3" placeholder="Summary..." class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white"></textarea>
+                    <div id="upMsg" class="text-xs font-bold text-emerald-400"></div>
+                </div>
+            `;
+            document.getElementById('modalActionBtn').innerText = "Queue Offline";
+            document.getElementById('modalActionBtn').onclick = () => {
+                document.getElementById('upMsg').innerText = "✅ Queued in local offline cache!";
+                setTimeout(closeModal, 1200);
+            };
+            showModal();
+        }
+
+        function openProfileModal() {
+            stopAudio();
+            const done = Object.values(progressData).filter(v => v >= 100).length;
+            document.getElementById('modalBadge').innerText = "Learner Profile";
+            document.getElementById('modalTitle').innerText = `Grade ${currentGrade} Student • Manila`;
+            document.getElementById('modalCreditFooter').innerText = "Saved Locally";
+            document.getElementById('modalBody').innerHTML = `
+                <div class="grid grid-cols-3 gap-2.5 text-center">
+                    <div class="bg-slate-900 p-3 rounded-xl border border-slate-800"><div class="text-xl font-extrabold text-sky-400">36</div><div class="text-[10px] text-slate-400">Modules</div></div>
+                    <div class="bg-slate-900 p-3 rounded-xl border border-slate-800"><div class="text-xl font-extrabold text-emerald-400">${done}</div><div class="text-[10px] text-slate-400">Done</div></div>
+                    <div class="bg-slate-900 p-3 rounded-xl border border-slate-800"><div class="text-xl font-extrabold text-amber-400">5</div><div class="text-[10px] text-slate-400">Archives</div></div>
+                </div>
+            `;
+            document.getElementById('modalActionBtn').innerText = "Done";
+            document.getElementById('modalActionBtn').onclick = closeModal;
+            showModal();
+        }
+
+        function toggleOfflineCache() {
+            offlineActive = !offlineActive;
+            const btn = document.getElementById('offlineToggleBtn');
+            const title = document.getElementById('offlineTitle');
+            const sub = document.getElementById('offlineSub');
+            const icon = document.getElementById('offlineIcon');
+
+            if (offlineActive) {
+                btn.className = "flex items-center gap-2.5 bg-gradient-to-r from-amber-600/90 to-orange-600/90 hover:from-amber-500 hover:to-orange-500 border border-amber-400/50 text-white px-3.5 py-2 rounded-xl text-left transition shadow-md cursor-pointer";
+                icon.innerText = "🛡️";
+                title.innerText = "OFFLINE MODE: ACTIVE";
+                sub.innerText = "(Grades 1–12 Cached • 0 Data)";
+            } else {
+                btn.className = "flex items-center gap-2.5 bg-slate-800 hover:bg-slate-700 border border-sky-500/40 text-white px-3.5 py-2 rounded-xl text-left transition shadow-md cursor-pointer";
+                icon.innerText = "🌐";
+                title.innerText = "ONLINE SYNC MODE";
+                sub.innerText = "Cloud Sync Enabled";
+            }
+        }
+
+        function downloadActiveLesson() {
+            const chip = document.getElementById('downloadChip');
+            chip.innerHTML = "✅ Saved";
+            setTimeout(() => { chip.innerHTML = `<span>⬇️</span> <span>${curriculumDB[currentGrade][currentSubject].size}</span>`; }, 2000);
+        }
+
+        function switchNav(tab) {
+            if (tab === 'bahay') window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function showModal() {
+            const m = document.getElementById('appModal');
+            m.classList.remove('hidden');
+            m.classList.add('flex');
+        }
+
+        function closeModal() {
+            stopAudio();
+            const m = document.getElementById('appModal');
+            m.classList.add('hidden');
+            m.classList.remove('flex');
+        }
+
+        initGradeSelector();
+    </script>
+</body>
+</html>

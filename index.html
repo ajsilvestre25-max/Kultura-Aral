@@ -3,25 +3,263 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kultura-Aral Test</title>
+    <title>Kultura-Aral | Complete K–12 (Grades 1–12) Peer & Heritage Platform</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #0b0f17;
+            color: #f8fafc;
+        }
+        .card-academic {
+            background: linear-gradient(145deg, rgba(16, 42, 67, 0.88) 0%, rgba(12, 24, 38, 0.96) 100%);
+            border: 1.5px solid rgba(56, 189, 248, 0.35);
+            box-shadow: 0 0 28px rgba(14, 165, 233, 0.12);
+        }
+        .card-heritage {
+            background: linear-gradient(145deg, rgba(58, 34, 16, 0.88) 0%, rgba(28, 19, 14, 0.96) 100%);
+            border: 1.5px solid rgba(245, 158, 11, 0.4);
+            box-shadow: 0 0 28px rgba(245, 158, 11, 0.12);
+        }
+        .hex-clip {
+            clip-path: polygon(50% 0%, 95% 25%, 95% 75%, 50% 100%, 5% 75%, 5% 25%);
+        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
 </head>
-<body class="bg-[#0b0f17] text-white min-h-screen flex items-center justify-center p-6">
-    <div class="max-w-md w-full bg-[#121824] border border-slate-700 rounded-2xl p-6 text-center space-y-4 shadow-2xl">
-        <div class="text-4xl">🌱</div>
-        <h1 class="text-2xl font-extrabold">Kultura-Aral is Live!</h1>
-        <p class="text-xs text-slate-400">If you see this card, your GitHub Pages deployment is working successfully.</p>
-        <button onclick="testClick()" class="w-full py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-xs uppercase tracking-wider cursor-pointer">
-            Click to Test Interactivity
-        </button>
-        <div id="testResult" class="text-xs font-bold text-emerald-400"></div>
+<body class="min-h-screen flex flex-col justify-between pb-24">
+
+    <div class="max-w-5xl w-full mx-auto px-4 pt-5 space-y-5">
+
+        <!-- Header Bar -->
+        <header class="flex flex-wrap items-center justify-between gap-3 bg-[#121824] border border-slate-800/90 rounded-2xl px-4 py-3 shadow-lg">
+            <div class="flex items-center gap-3">
+                <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-700 flex items-center justify-center shadow-md relative">
+                    <span class="font-extrabold text-white text-lg tracking-tighter">ka</span>
+                    <span class="absolute -top-1 -right-1 text-xs">🌱</span>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <h1 class="font-extrabold text-lg text-white tracking-tight">Kultura-Aral</h1>
+                        <span class="text-sm" title="Philippines">🇵🇭</span>
+                        <span class="text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2 py-0.5 rounded-full">K–12 FULL</span>
+                    </div>
+                    <p id="headerSubtitle" class="text-xs text-slate-400 font-medium">Manila, PH <span class="text-slate-600 mx-1">|</span> Grade 11 (SHS)</p>
+                </div>
+            </div>
+
+            <!-- Offline Mode Pill -->
+            <button id="offlineToggleBtn" onclick="toggleOfflineCache()" class="flex items-center gap-2.5 bg-gradient-to-r from-amber-600/90 to-orange-600/90 hover:from-amber-500 hover:to-orange-500 border border-amber-400/50 text-white px-3.5 py-2 rounded-xl text-left transition shadow-md cursor-pointer">
+                <span id="offlineIcon" class="text-base">🛡️</span>
+                <div>
+                    <div id="offlineTitle" class="text-[11px] font-extrabold uppercase tracking-wider leading-tight">
+                        OFFLINE MODE: ACTIVE
+                    </div>
+                    <div id="offlineSub" class="text-[10px] text-amber-100 font-medium">
+                        (Grades 1–12 Cached • 0 Data)
+                    </div>
+                </div>
+            </button>
+        </header>
+
+        <!-- GRADE 1–12 SELECTOR BAR -->
+        <section class="bg-[#121824] border border-slate-800 rounded-2xl p-3.5 space-y-2.5">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+                <span class="text-[11px] font-extrabold uppercase tracking-wider text-slate-300">Select Grade Level (DepEd K–12 Bridge):</span>
+                <div class="flex items-center gap-1.5 text-[10px] font-bold">
+                    <button onclick="jumpStage(1)" class="px-2.5 py-1 rounded-md bg-slate-800 hover:bg-slate-700 text-emerald-300 cursor-pointer">Elem (G1–6)</button>
+                    <button onclick="jumpStage(7)" class="px-2.5 py-1 rounded-md bg-slate-800 hover:bg-slate-700 text-sky-300 cursor-pointer">JHS (G7–10)</button>
+                    <button onclick="jumpStage(11)" class="px-2.5 py-1 rounded-md bg-slate-800 hover:bg-slate-700 text-amber-300 cursor-pointer">SHS (G11–12)</button>
+                </div>
+            </div>
+            <div id="gradeSelector" class="flex items-center gap-2 overflow-x-auto no-scrollbar py-1"></div>
+        </section>
+
+        <!-- Dual Feature Grid -->
+        <div id="mainGrid" class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+
+            <!-- LEFT CARD: ACADEMIC CATCH-UP -->
+            <section id="academicSection" class="card-academic rounded-2xl p-5 flex flex-col justify-between space-y-5">
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between gap-2">
+                        <div class="flex items-center gap-2">
+                            <span class="text-lg">📚</span>
+                            <h2 id="academicCardHeader" class="font-extrabold text-sm tracking-wider uppercase text-sky-300">Grade 11 Academic Catch-Up</h2>
+                        </div>
+                        <span id="stageBadge" class="text-[10px] font-bold text-sky-200 bg-sky-950/90 px-2.5 py-0.5 rounded-full border border-sky-700">Senior High School</span>
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-2.5">
+                        <button onclick="selectSubject('math')" id="sub-math" class="subject-btn group relative bg-sky-900/50 border-2 border-sky-400 rounded-xl p-3 flex flex-col items-center justify-center gap-1.5 transition cursor-pointer">
+                            <div class="w-10 h-10 rounded-lg bg-sky-500/20 flex items-center justify-center text-sky-300 font-bold text-lg">±%</div>
+                            <span class="text-[11px] font-bold tracking-wider text-white">MATH</span>
+                            <span id="check-math" class="absolute -bottom-1.5 -right-1.5 w-4 h-4 rounded-full bg-emerald-500 text-[10px] flex items-center justify-center text-slate-950 font-bold">✓</span>
+                        </button>
+
+                        <button onclick="selectSubject('science')" id="sub-science" class="subject-btn group relative bg-slate-900/60 border border-emerald-500/40 hover:border-emerald-400 rounded-xl p-3 flex flex-col items-center justify-center gap-1.5 transition cursor-pointer">
+                            <div class="w-10 h-10 rounded-lg bg-emerald-500/20 flex items-center justify-center text-emerald-300 text-lg">🧪</div>
+                            <span class="text-[11px] font-bold tracking-wider text-slate-200">SCIENCE</span>
+                            <span id="check-science" class="absolute -bottom-1.5 -right-1.5 w-4 h-4 rounded-full bg-slate-700 text-[10px] flex items-center justify-center text-slate-300 font-bold">•</span>
+                        </button>
+
+                        <button onclick="selectSubject('literacy')" id="sub-literacy" class="subject-btn group relative bg-slate-900/60 border border-purple-500/40 hover:border-purple-400 rounded-xl p-3 flex flex-col items-center justify-center gap-1.5 transition cursor-pointer">
+                            <div class="w-10 h-10 rounded-lg bg-purple-500/20 flex items-center justify-center text-purple-300 text-lg">✍️</div>
+                            <span class="text-[11px] font-bold tracking-wider text-slate-200">LITERACY</span>
+                            <span id="check-literacy" class="absolute -bottom-1.5 -right-1.5 w-4 h-4 rounded-full bg-slate-700 text-[10px] flex items-center justify-center text-slate-300 font-bold">•</span>
+                        </button>
+                    </div>
+
+                    <div class="bg-slate-950/75 border border-sky-500/30 rounded-xl p-4 space-y-3">
+                        <div class="flex items-start justify-between gap-2">
+                            <div>
+                                <p id="featuredCode" class="text-[10px] font-bold uppercase tracking-wider text-sky-400">DepEd Competency</p>
+                                <h3 id="featuredTitle" class="text-base font-extrabold text-white leading-snug mt-0.5">Functions & Models</h3>
+                            </div>
+                            <button onclick="downloadActiveLesson()" id="downloadChip" class="flex items-center gap-1 bg-slate-800 hover:bg-slate-700 text-sky-300 border border-sky-500/30 px-2.5 py-1 rounded-lg text-[11px] font-semibold transition shrink-0 cursor-pointer">
+                                <span>⬇️</span> <span id="featuredSize">140 KB</span>
+                            </button>
+                        </div>
+
+                        <p id="featuredShortDesc" class="text-xs text-slate-300 leading-relaxed">Bridges foundational competencies directly with step-by-step worked solutions.</p>
+
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-[11px] font-semibold">
+                                <span class="text-slate-400">Mastery & Self-Check Quiz</span>
+                                <span id="featuredPercent" class="text-sky-300">0%</span>
+                            </div>
+                            <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+                                <div id="featuredBar" class="h-full bg-gradient-to-r from-sky-400 to-emerald-400 rounded-full transition-all duration-300" style="width: 0%"></div>
+                            </div>
+                        </div>
+
+                        <button onclick="playRealLesson()" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-extrabold text-xs uppercase tracking-wider shadow-lg shadow-emerald-950/50 transition cursor-pointer">
+                            ▶ Open Full Lesson, Audio & Quiz
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-3 flex items-center justify-between gap-2 text-[11px]">
+                    <span class="text-slate-400">Aligned with <strong class="text-slate-200">DepEd K–12</strong> & <strong class="text-slate-200">PIDS (2023)</strong></span>
+                    <button onclick="openCitationsModal()" class="text-sky-400 hover:underline font-bold shrink-0 cursor-pointer">View Citations →</button>
+                </div>
+            </section>
+
+            <!-- RIGHT CARD: LOCAL HERITAGE ARCHIVES -->
+            <section id="heritageSection" class="card-heritage rounded-2xl p-5 flex flex-col justify-between space-y-5">
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between gap-2">
+                        <div class="flex items-center gap-2">
+                            <span class="text-lg">🏛️</span>
+                            <h2 class="font-extrabold text-sm tracking-wider uppercase text-amber-300">Local Heritage Archives</h2>
+                        </div>
+                        <span class="text-[10px] font-bold text-amber-200 bg-amber-950/90 px-2.5 py-0.5 rounded-full border border-amber-700">IKSP • EDCOM II</span>
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-2 pt-1">
+                        <button onclick="openHeritageStory('inabel')" class="flex flex-col items-center text-center group cursor-pointer">
+                            <div class="w-20 h-20 hex-clip bg-amber-500/40 p-0.5 transition transform group-hover:scale-105">
+                                <img src="https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?auto=format&fit=crop&w=300&q=80" alt="Inabel" class="w-full h-full object-cover hex-clip">
+                            </div>
+                            <span class="mt-2 text-[10px] font-extrabold uppercase tracking-wider text-amber-100 leading-tight">Ethno-<br>Mathematics</span>
+                        </button>
+
+                        <button onclick="openHeritageStory('muyong')" class="flex flex-col items-center text-center group cursor-pointer">
+                            <div class="w-20 h-20 hex-clip bg-amber-500/40 p-0.5 transition transform group-hover:scale-105">
+                                <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=300&q=80" alt="Muyong" class="w-full h-full object-cover hex-clip">
+                            </div>
+                            <span class="mt-2 text-[10px] font-extrabold uppercase tracking-wider text-amber-100 leading-tight">Indigenous<br>Ecology</span>
+                        </button>
+
+                        <button onclick="openHeritageStory('atsara')" class="flex flex-col items-center text-center group cursor-pointer">
+                            <div class="w-20 h-20 hex-clip bg-amber-500/40 p-0.5 transition transform group-hover:scale-105">
+                                <img src="https://images.unsplash.com/photo-1518509562904-e7ef99cdcc86?auto=format&fit=crop&w=300&q=80" alt="Atsara" class="w-full h-full object-cover hex-clip">
+                            </div>
+                            <span class="mt-2 text-[10px] font-extrabold uppercase tracking-wider text-amber-100 leading-tight">Local Food<br>Biochemistry</span>
+                        </button>
+                    </div>
+
+                    <div class="bg-slate-950/65 border border-amber-500/20 rounded-xl p-3.5 space-y-2.5">
+                        <p class="text-[11px] text-amber-200/80 font-semibold text-center">Select a Verified Regional Module (Ilagan, 2024):</p>
+                        <div class="flex flex-wrap justify-center gap-1.5">
+                            <button onclick="openHeritageStory('muyong')" class="px-3 py-1 rounded-full text-[11px] font-medium bg-amber-950/90 hover:bg-amber-800 text-amber-200 border border-amber-600/40 transition cursor-pointer">Ifugao Muyong</button>
+                            <button onclick="openHeritageStory('inabel')" class="px-3 py-1 rounded-full text-[11px] font-medium bg-amber-950/90 hover:bg-amber-800 text-amber-200 border border-amber-600/40 transition cursor-pointer">Inabel Geometry</button>
+                            <button onclick="openHeritageStory('atsara')" class="px-3 py-1 rounded-full text-[11px] font-medium bg-amber-950/90 hover:bg-amber-800 text-amber-200 border border-amber-600/40 transition cursor-pointer">Atsara Science</button>
+                            <button onclick="openHeritageStory('baybayin')" class="px-3 py-1 rounded-full text-[11px] font-medium bg-amber-950/90 hover:bg-amber-800 text-amber-200 border border-amber-600/40 transition cursor-pointer">Baybayin Scripts</button>
+                            <button onclick="openHeritageStory('balangay')" class="px-3 py-1 rounded-full text-[11px] font-medium bg-amber-950/90 hover:bg-amber-800 text-amber-200 border border-amber-600/40 transition cursor-pointer">Balangay Engineering</button>
+                        </div>
+                    </div>
+                </div>
+
+                <button onclick="openHeritageStory('muyong')" class="w-full py-3 rounded-full bg-gradient-to-r from-amber-300 via-amber-400 to-orange-400 hover:from-amber-200 hover:to-amber-300 text-slate-950 font-extrabold text-xs uppercase tracking-wider shadow-lg shadow-amber-950/50 transition cursor-pointer">
+                    Explore Verified Roots & Elder Notes
+                </button>
+            </section>
+
+        </div>
+
+        <!-- Citation Banner -->
+        <section class="bg-[#121824] border border-slate-800 rounded-2xl p-4 flex flex-wrap items-center justify-between gap-3">
+            <div class="space-y-0.5">
+                <div class="text-xs font-extrabold text-white">Grounded in Empirical Research & UNESCO SDG 4</div>
+                <p class="text-[11px] text-slate-400">Built on findings from World Bank (2020), PIDS (2023), Ilagan (2024), and EDCOM II (2026).</p>
+            </div>
+            <button onclick="openCitationsModal()" class="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs font-bold text-amber-300 transition cursor-pointer">
+                📖 Full Bibliography & Credits
+            </button>
+        </section>
+
     </div>
 
+    <!-- Bottom Mobile Navigation Bar -->
+    <nav class="fixed bottom-0 inset-x-0 bg-[#0f1520]/95 backdrop-blur-md border-t border-slate-800 z-40">
+        <div class="max-w-md mx-auto grid grid-cols-4 py-2.5 px-2 text-center">
+            <button onclick="switchNav('bahay')" id="nav-bahay" class="flex flex-col items-center gap-1 text-amber-400 font-bold transition cursor-pointer">
+                <span class="text-lg">🏠</span>
+                <span class="text-[11px]">Bahay</span>
+            </button>
+            <button onclick="playRealLesson()" id="nav-aralan" class="flex flex-col items-center gap-1 text-slate-400 hover:text-slate-200 font-medium transition cursor-pointer">
+                <span class="text-lg">📖</span>
+                <span class="text-[11px]">Aralan</span>
+            </button>
+            <button onclick="openUploadModal()" id="nav-samasama" class="flex flex-col items-center gap-1 text-slate-400 hover:text-emerald-300 font-medium transition cursor-pointer">
+                <span class="text-lg">🤝</span>
+                <span class="text-[11px]">Sama-sama</span>
+            </button>
+            <button onclick="openProfileModal()" id="nav-ako" class="flex flex-col items-center gap-1 text-slate-400 hover:text-sky-300 font-medium transition cursor-pointer">
+                <span class="text-lg">👤</span>
+                <span class="text-[11px]">Ako</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Modal Container -->
+    <div id="appModal" class="fixed inset-0 bg-black/85 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+        <div class="bg-[#131b29] border border-slate-700 rounded-2xl max-w-2xl w-full p-6 space-y-4 shadow-2xl max-h-[90vh] overflow-y-auto">
+            <div class="flex items-start justify-between gap-3 border-b border-slate-800 pb-3">
+                <div>
+                    <span id="modalBadge" class="text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">Verified Module</span>
+                    <h3 id="modalTitle" class="text-xl font-extrabold text-white mt-2">Lesson Title</h3>
+                </div>
+                <button onclick="closeModal()" class="w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center font-bold cursor-pointer">✕</button>
+            </div>
+
+            <div id="modalBody" class="text-sm text-slate-300 leading-relaxed space-y-4"></div>
+
+            <div class="pt-3 border-t border-slate-800 flex flex-wrap justify-between items-center gap-2">
+                <span id="modalCreditFooter" class="text-[10px] text-slate-400">Verified Peer & Faculty Content</span>
+                <div class="flex gap-2">
+                    <button onclick="closeModal()" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-slate-200 cursor-pointer">Close</button>
+                    <button id="modalActionBtn" onclick="closeModal()" class="px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-xs font-extrabold text-slate-950 cursor-pointer">Save Progress</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Engine -->
     <script>
-        function testClick() {
-            document.getElementById('testResult').innerText = "✅ Success! JavaScript and Interactivity are fully operational.";
-            alert("Interactivity test passed successfully!");
-        }
-    </script>
-</body>
-</html>
+        let currentGrade = 11;
+        let currentSubject = 'math';
+        let offlineActive = true;
+     

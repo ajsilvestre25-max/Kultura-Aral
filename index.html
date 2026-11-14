@@ -144,7 +144,7 @@
                         </div>
 
                         <button onclick="playRealLesson()" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-extrabold text-xs uppercase tracking-wider shadow-lg shadow-emerald-950/50 transition cursor-pointer">
-                            ▶ Open Full Lesson, Audio & Quiz
+                            ▶ Open 5-Question Quiz & Lesson
                         </button>
                     </div>
                 </div>
@@ -240,10 +240,11 @@
             </button>
             <button onclick="openProfileModal()" id="nav-ako" class="flex flex-col items-center gap-1 text-slate-400 hover:text-sky-300 font-medium transition cursor-pointer">
                 <span class="text-lg">👤</span>
+                
                 <span class="text-[11px]">Ako</span>
             </button>
         </div>
-    </nav>
+                    </nav>
         <!-- Modal Container -->
     <div id="appModal" class="fixed inset-0 bg-black/85 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
         <div class="bg-[#131b29] border border-slate-700 rounded-2xl max-w-2xl w-full p-6 space-y-4 shadow-2xl max-h-[90vh] overflow-y-auto">
@@ -288,9 +289,6 @@
                     shortDesc: "Visualizing numbers up to 100 using everyday objects.",
                     explanation: "Every 2-digit number is made of tens and ones. For example, 47 has 4 tens and 7 ones.",
                     workedExample: "3 bundles of 10 + 6 single items = 36 total.",
-                    quizQ: "What is the value of the digit 8 in the number 84?",
-                    options: ["8", "80", "40"],
-                    correctIdx: 1,
                     credit: "Source: DepEd MATATAG Math 1 (2023)"
                 },
                 science: {
@@ -300,9 +298,6 @@
                     shortDesc: "Understanding sunlight, water, air, and soil.",
                     explanation: "Plants need sunlight, water, air, and soil nutrients to grow healthy.",
                     workedExample: "Seeds need sunlight and water to sprout green leaves.",
-                    quizQ: "Which plant part absorbs water from soil?",
-                    options: ["Leaves", "Roots", "Flowers"],
-                    correctIdx: 1,
                     credit: "Source: DepEd Science Framework"
                 },
                 literacy: {
@@ -312,9 +307,6 @@
                     shortDesc: "Blending consonant-vowel syllables for reading fluency.",
                     explanation: "Words are built from syllables: ba-hay (2 claps), pa-mil-ya (3 claps).",
                     workedExample: "ma + ta = mata | ku + bo = kubo.",
-                    quizQ: "How many syllables are in 'pa-mil-ya'?",
-                    options: ["2", "3", "4"],
-                    correctIdx: 1,
                     credit: "Source: DepEd MATATAG Reading"
                 }
             },
@@ -327,9 +319,6 @@
                     shortDesc: "Mastering negative numbers and algebra fundamentals.",
                     explanation: "Negative multiplied by negative gives a positive: (-4) × (-3) = +12.",
                     workedExample: "Solve (-18) ÷ (-3) + (-5) = 6 - 5 = 1.",
-                    quizQ: "What is (-6) × (-4) - 10?",
-                    options: ["-34", "14", "-14"],
-                    correctIdx: 1,
                     credit: "Source: DepEd MATATAG Math 7"
                 },
                 science: {
@@ -339,9 +328,6 @@
                     shortDesc: "Independent, dependent, and controlled variables.",
                     explanation: "Independent is what you change; dependent is what you measure.",
                     workedExample: "Testing fertilizer amount on plant height.",
-                    quizQ: "What is the dependent variable in a test of study time vs. test score?",
-                    options: ["Study hours", "Quiz score", "Pen type"],
-                    correctIdx: 1,
                     credit: "Source: DepEd Science 7"
                 },
                 literacy: {
@@ -351,9 +337,6 @@
                     shortDesc: "Point, Evidence, Explanation, Link.",
                     explanation: "Start with a topic sentence followed by factual evidence and explanation.",
                     workedExample: "Point → Evidence (PIDS, 2023) → Explanation.",
-                    quizQ: "What does the 'E' in PEEL stand for?",
-                    options: ["Exaggeration", "Evidence & Explanation", "Entertainment"],
-                    correctIdx: 1,
                     credit: "Source: DepEd English 7"
                 }
             },
@@ -366,9 +349,6 @@
                     shortDesc: "Bridges JHS factoring into SHS functions and domains.",
                     explanation: "For rational functions f(x) = p(x)/q(x), set denominator q(x) = 0 to find vertical asymptotes.",
                     workedExample: "For f(x) = 10 / (x - 5), x cannot equal 5.",
-                    quizQ: "What value of x is excluded from f(x) = 10 / (x + 4)?",
-                    options: ["x = 4", "x = -4", "x = 10"],
-                    correctIdx: 1,
                     credit: "Source: DepEd SHS General Mathematics"
                 },
                 science: {
@@ -378,9 +358,6 @@
                     shortDesc: "Connecting Earth's subsystems to local ecology.",
                     explanation: "Forests and mangroves naturally sequester carbon and buffer storm surges.",
                     workedExample: "Composting campus waste returns nutrients directly to soil.",
-                    quizQ: "Which subsystem includes all water bodies?",
-                    options: ["Lithosphere", "Hydrosphere", "Atmosphere"],
-                    correctIdx: 1,
                     credit: "Source: DepEd Earth & Life Science"
                 },
                 literacy: {
@@ -390,9 +367,6 @@
                     shortDesc: "Formulating SOPs and ethical interview guides.",
                     explanation: "Qualitative research explores lived experiences and cultural narratives.",
                     workedExample: "Using informed consent before conducting elder interviews.",
-                    quizQ: "Which design is best for documenting elder oral histories?",
-                    options: ["Qualitative Ethnography", "Lab Titration", "Drug Trial"],
-                    correctIdx: 0,
                     credit: "Source: DepEd Practical Research"
                 }
             }
@@ -402,13 +376,14 @@
             if (!curriculumDB[i]) {
                 curriculumDB[i] = {
                     stage: i <= 6 ? "Elementary" : (i <= 10 ? "Junior High School" : "Senior High School"),
-                    math: { code: `DepEd Math ${i}`, title: `Grade ${i} Core Mathematics Competencies`, size: "120 KB", shortDesc: `Core problem-solving module aligned with Grade ${i} standards.`, explanation: `Step-by-step mathematical reasoning and applied problem-solving for Grade ${i}.`, workedExample: `Applied practice problem with step-by-step solution.`, quizQ: `What is the primary focus of this Grade ${i} math module?`, options: ["Applied problem solving", "Random guessing", "None"], correctIdx: 0, credit: `DepEd Curriculum Guide Grade ${i}` },
-                    science: { code: `DepEd Science ${i}`, title: `Grade ${i} Applied Science Concepts`, size: "125 KB", shortDesc: `Scientific inquiry and investigation for Grade ${i}.`, explanation: `Understanding natural phenomena and scientific laws through local applications.`, workedExample: `Experimental observation and data collection.`, quizQ: `Why is empirical testing important in science?`, options: ["It verifies facts with evidence", "It relies on rumor", "It skips data"], correctIdx: 0, credit: `DepEd Science Guide Grade ${i}` },
-                    literacy: { code: `DepEd English/Research ${i}`, title: `Grade ${i} Critical Reading & Communication`, size: "115 KB", shortDesc: `Reading comprehension and writing structured arguments.`, explanation: `Analyzing text structure, context clues, and evidence-based writing.`, workedExample: `Identifying main ideas and citing sources correctly.`, quizQ: `What makes a written source reliable?`, options: ["Verifiable institutional evidence", "Anonymous posts", "Uncited rumors"], correctIdx: 0, credit: `DepEd English Guide Grade ${i}` }
+                    math: { code: `DepEd Math ${i}`, title: `Grade ${i} Core Mathematics Competencies`, size: "120 KB", shortDesc: `Core problem-solving module aligned with Grade ${i} standards.`, explanation: `Step-by-step mathematical reasoning and applied problem-solving for Grade ${i}.`, workedExample: `Applied practice problem with step-by-step solution.`, credit: `DepEd Curriculum Guide Grade ${i}` },
+                    science: { code: `DepEd Science ${i}`, title: `Grade ${i} Applied Science Concepts`, size: "125 KB", shortDesc: `Scientific inquiry and investigation for Grade ${i}.`, explanation: `Understanding natural phenomena and scientific laws through local applications.`, workedExample: `Experimental observation and data collection.`, credit: `DepEd Science Guide Grade ${i}` },
+                    literacy: { code: `DepEd English/Research ${i}`, title: `Grade ${i} Critical Reading & Communication`, size: "115 KB", shortDesc: `Reading comprehension and writing structured arguments.`, explanation: `Analyzing text structure, context clues, and evidence-based writing.`, workedExample: `Identifying main ideas and citing sources correctly.`, credit: `DepEd English Guide Grade ${i}` }
                 };
             }
         }
-                const heritageDB = {
+
+        const heritageDB = {
             muyong: { region: "Ifugao", title: "Ifugao Muyong Forest & Gravity Irrigation", stemLink: "Watershed Ecology & Fluid Mechanics", story: "Communal family forests above rice terraces capture rain and feed stone irrigation channels naturally without pumps.", elderInsight: "Protect the forest above so the water below never runs dry.", citation: "Ilagan (2024); UNESCO World Heritage" },
             inabel: { region: "Ilocos Norte", title: "Inabel Weaving & Ethnomathematics", stemLink: "Geometry, Ratios & Symmetry", story: "Weavers calculate thread counts and geometric tessellations entirely through spatial memory.", elderInsight: "Connecting math tessellations to living Filipino arts.", citation: "NCCA Living Traditions; Ilagan (2024)" },
             atsara: { region: "Quezon", title: "Biochemistry of Acid Preservation in Atsara", stemLink: "pH, Osmosis & Microbiology", story: "Salting draws out water while acetic acid lowers pH below 4.6 to halt bacteria safely.", elderInsight: "Traditional preservation is applied food microbiology.", citation: "Philippine Food Heritage Science" },
@@ -416,7 +391,33 @@
             balangay: { region: "Butuan", title: "Butuan Balangay Boatbuilding", stemLink: "Buoyancy & Torque Physics", story: "Lashed-lug plank joinery creates flexible hulls that absorb ocean wave impacts.", elderInsight: "Early maritime engineering mastery across islands.", citation: "National Museum Archaeological Sites" }
         };
 
-        function initGradeSelector() {
+        const comprehensiveQuizDB = {
+            math: [
+                { q: "1. What is the primary focus of this module?", options: ["Applied problem solving", "Random guessing", "None"], correct: 0 },
+                { q: "2. Which method helps solve algebraic equations step by step?", options: ["Systematic substitution", "Skipping steps", "Guessing numbers"], correct: 0 },
+                { q: "3. Why is checking your answer important in math?", options: ["It verifies accuracy", "It takes longer", "It is optional"], correct: 0 },
+                { q: "4. What represents an unknown value in algebraic expressions?", options: ["Variables (like x)", "Random symbols", "Constants only"], correct: 0 },
+                { q: "5. How do word problems relate to real life?", options: ["They model practical situations", "They have no purpose", "They are purely theoretical"], correct: 0 }
+            ],
+            science: [
+                { q: "1. Why is empirical testing important in science?", options: ["It verifies facts with evidence", "It relies on rumor", "It skips data"], correct: 0 },
+                { q: "2. What is a controlled variable?", options: ["A factor kept constant during an experiment", "A random change", "The final result"], correct: 0 },
+                { q: "3. What does observation involve in scientific inquiry?", options: ["Using senses and instruments to gather data", "Guessing outcomes", "Ignoring anomalies"], correct: 0 },
+                { q: "4. How do ecosystems maintain balance?", options: ["Through interdependent biological cycles", "By random chance", "Without energy transfer"], correct: 0 },
+                { q: "5. What is the role of hypothesis testing?", options: ["To evaluate proposed explanations", "To create stories", "To avoid research"], correct: 0 }
+            ],
+            literacy: [
+                { q: "1. What makes a written source reliable?", options: ["Verifiable institutional evidence", "Anonymous posts", "Uncited rumors"], correct: 0 },
+                { q: "2. What is the purpose of topic sentences?", options: ["To introduce the main idea of a paragraph", "To confuse readers", "To list random facts"], correct: 0 },
+                { q: "3. How does evidence strengthen an argument?", options: ["By providing factual backing", "By increasing word count", "By repeating claims"], correct: 0 },
+                { q: "4. What does reading comprehension require?", options: ["Active engagement and critical analysis", "Skimming without thinking", "Memorizing words blindly"], correct: 0 },
+                { q: "5. Why are citations important in research?", options: ["To give credit and verify sources", "To fill space", "To make papers longer"], correct: 0 }
+            ]
+        };
+
+        let currentQuizIndex = 0;
+        let userScore = 0;
+            function initGradeSelector() {
             const container = document.getElementById('gradeSelector');
             container.innerHTML = '';
             for (let g = 1; g <= 12; g++) {
@@ -496,7 +497,7 @@
         }
 
         function speakLessonText(txt) {
-            if ('speechSynthesis' in window) {
+            if ('speechSynthesis' in window && window.speechSynthesis) {
                 window.speechSynthesis.cancel();
                 const utterance = new SpeechSynthesisUtterance(txt);
                 utterance.rate = 0.96;
@@ -505,12 +506,13 @@
                 utterance.onend = () => { if (statusEl) statusEl.innerText = "✅ Audio Lecture Finished"; };
                 window.speechSynthesis.speak(utterance);
             } else {
-                alert("Speech synthesis is not supported on this browser.");
+                const statusEl = document.getElementById('audioStatus');
+                if (statusEl) statusEl.innerText = "💬 Audio not supported on this browser (Text mode active)";
             }
         }
 
         function stopAudio() {
-            if ('speechSynthesis' in window) {
+            if ('speechSynthesis' in window && window.speechSynthesis) {
                 window.speechSynthesis.cancel();
                 const statusEl = document.getElementById('audioStatus');
                 if (statusEl) statusEl.innerText = "⏹️ Audio Paused";
@@ -519,67 +521,88 @@
 
         function playRealLesson() {
             stopAudio();
+            currentQuizIndex = 0;
+            userScore = 0;
+            renderQuizStep();
+        }
+
+        function renderQuizStep() {
             const lesson = curriculumDB[currentGrade][currentSubject];
+            const quizList = comprehensiveQuizDB[currentSubject] || comprehensiveQuizDB.math;
+            const currentQ = quizList[currentQuizIndex];
             const activeKey = `G${currentGrade}_${currentSubject}`;
 
-            document.getElementById('modalBadge').innerText = `Grade ${currentGrade} • Verified Offline Module`;
+            document.getElementById('modalBadge').innerText = `Grade ${currentGrade} • Question ${currentQuizIndex + 1} of ${quizList.length}`;
             document.getElementById('modalTitle').innerText = lesson.title;
             document.getElementById('modalCreditFooter').innerText = lesson.credit;
 
-            const script = `Grade ${currentGrade} ${currentSubject}: ${lesson.title}. ${lesson.explanation} Example: ${lesson.workedExample}`;
-
-            let opts = lesson.options.map((opt, idx) => `
-                <button onclick="checkQuizAnswer(${idx}, ${lesson.correctIdx}, '${activeKey}')" class="w-full text-left px-3.5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs font-semibold text-slate-200 transition cursor-pointer">
+            let opts = currentQ.options.map((opt, idx) => `
+                <button onclick="handleMultiQuiz(${idx}, ${currentQ.correct}, ${quizList.length}, '${activeKey}')" class="w-full text-left px-3.5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs font-semibold text-slate-200 transition cursor-pointer">
                     ${String.fromCharCode(65 + idx)}. ${opt}
                 </button>
             `).join('');
 
+            const audioSupported = ('speechSynthesis' in window && window.speechSynthesis);
+            const audioBannerText = audioSupported ? "🎧 Offline Audio Summary Ready" : "💬 Audio Not Supported (Interactive Text Mode)";
+
             document.getElementById('modalBody').innerHTML = `
                 <div class="bg-emerald-950/40 border border-emerald-500/30 rounded-xl p-3.5 flex flex-wrap items-center justify-between gap-2">
                     <div>
-                        <div id="audioStatus" class="text-xs font-extrabold text-emerald-300">🎧 Offline Audio Summary Ready</div>
-                        <div class="text-[11px] text-emerald-100/70">Uses device speech engine</div>
+                        <div id="audioStatus" class="text-xs font-extrabold text-emerald-300">${audioBannerText}</div>
+                        <div class="text-[11px] text-emerald-100/70">Score: ${userScore}/${quizList.length} completed</div>
                     </div>
+                    ${audioSupported ? `
                     <div class="flex gap-1.5">
-                        <button onclick="speakLessonText(\`${script.replace(/`/g, "'")}\`)" class="px-3 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-xs cursor-pointer">▶ Listen</button>
+                        <button onclick="speakLessonText(\`${lesson.explanation.replace(/`/g, "'")}\`)" class="px-3 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-xs cursor-pointer">▶ Listen</button>
                         <button onclick="stopAudio()" class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs cursor-pointer">⏹</button>
-                    </div>
+                    </div>` : ''}
                 </div>
                 <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-4 space-y-2">
-                    <div class="text-xs font-extrabold uppercase tracking-wider text-sky-400">1. Core Concept</div>
+                    <div class="text-xs font-extrabold uppercase tracking-wider text-sky-400">Core Concept & Example</div>
                     <p class="text-xs text-slate-200 leading-relaxed">${lesson.explanation}</p>
-                </div>
-                <div class="bg-slate-900/90 border border-sky-500/20 rounded-xl p-4 space-y-2">
-                    <div class="text-xs font-extrabold uppercase tracking-wider text-amber-300">2. Worked Example</div>
-                    <p class="text-xs font-mono text-emerald-300 bg-slate-950 p-3 rounded-lg leading-relaxed">${lesson.workedExample}</p>
+                    <p class="text-xs font-mono text-emerald-300 bg-slate-950 p-2.5 rounded-lg mt-1">${lesson.workedExample}</p>
                 </div>
                 <div class="bg-slate-950/80 border border-slate-800 rounded-xl p-4 space-y-2.5">
-                    <div class="text-xs font-extrabold uppercase tracking-wider text-purple-300">3. Quick Mastery Check</div>
-                    <p class="text-xs font-bold text-white">${lesson.quizQ}</p>
+                    <div class="flex justify-between items-center">
+                        <div class="text-xs font-extrabold uppercase tracking-wider text-purple-300">Question ${currentQuizIndex + 1} of ${quizList.length}</div>
+                        <span class="text-[10px] text-slate-400">Progress: ${Math.round((currentQuizIndex / quizList.length) * 100)}%</span>
+                    </div>
+                    <p class="text-xs font-bold text-white">${currentQ.q}</p>
                     <div class="space-y-1.5">${opts}</div>
                     <div id="quizFeedback" class="text-xs font-bold pt-1"></div>
                 </div>
             `;
 
-            document.getElementById('modalActionBtn').innerText = "Mark Complete (100%)";
-            document.getElementById('modalActionBtn').onclick = () => {
-                progressData[activeKey] = 100;
-                localStorage.setItem('kulturaAralProgress', JSON.stringify(progressData));
-                updateGradeUI();
-                closeModal();
-            };
+            document.getElementById('modalActionBtn').innerText = "Close Quiz";
+            document.getElementById('modalActionBtn').onclick = closeModal;
             showModal();
         }
 
-        function checkQuizAnswer(selectedIdx, correctIdx, storageKey) {
+        function handleMultiQuiz(selectedIdx, correctIdx, totalQuestions, storageKey) {
             const fb = document.getElementById('quizFeedback');
             if (selectedIdx === correctIdx) {
-                fb.innerHTML = `<span class="text-emerald-400">✅ Correct! Progress saved at 100%.</span>`;
-                progressData[storageKey] = 100;
-                localStorage.setItem('kulturaAralProgress', JSON.stringify(progressData));
-                updateGradeUI();
+                userScore++;
+                fb.innerHTML = `<span class="text-emerald-400">✅ Correct! Moving to next question...</span>`;
+                setTimeout(() => {
+                    currentQuizIndex++;
+                    if (currentQuizIndex < totalQuestions) {
+                        renderQuizStep();
+                    } else {
+                        progressData[storageKey] = 100;
+                        localStorage.setItem('kulturaAralProgress', JSON.stringify(progressData));
+                        updateGradeUI();
+                        document.getElementById('modalBody').innerHTML = `
+                            <div class="text-center py-6 space-y-3">
+                                <div class="text-3xl">🎉</div>
+                                <h3 class="text-lg font-extrabold text-white">Quiz Completed!</h3>
+                                <p class="text-xs text-slate-300">You scored ${userScore} out of ${totalQuestions} correct. Mastery saved at 100%!</p>
+                            </div>
+                        `;
+                        document.getElementById('modalActionBtn').innerText = "Finish & Save";
+                    }
+                }, 1000);
             } else {
-                fb.innerHTML = `<span class="text-amber-400">💡 Try again! Review the worked example above.</span>`;
+                fb.innerHTML = `<span class="text-amber-400">💡 Incorrect. Review the concept above and try again!</span>`;
             }
         }
 
@@ -591,17 +614,19 @@
             document.getElementById('modalCreditFooter').innerText = item.citation;
 
             const spoken = `${item.title}, from ${item.region}. ${item.story} ${item.elderInsight}`;
+            const audioSupported = ('speechSynthesis' in window && window.speechSynthesis);
 
             document.getElementById('modalBody').innerHTML = `
                 <div class="bg-amber-950/40 border border-amber-500/30 rounded-xl p-3.5 flex flex-wrap items-center justify-between gap-2">
                     <div>
-                        <div id="audioStatus" class="text-xs font-extrabold text-amber-300">🎙️ Elder & Cultural Field Notes Audio</div>
+                        <div id="audioStatus" class="text-xs font-extrabold text-amber-300">${audioSupported ? "🎙️ Elder & Cultural Field Notes Audio" : "💬 Audio Not Supported (Text Mode)"}</div>
                         <div class="text-[11px] text-amber-100/70">${item.stemLink}</div>
                     </div>
+                    ${audioSupported ? `
                     <div class="flex gap-1.5">
                         <button onclick="speakLessonText(\`${spoken.replace(/`/g, "'")}\`)" class="px-3 py-1.5 rounded-lg bg-amber-400 hover:bg-amber-300 text-slate-950 font-extrabold text-xs cursor-pointer">▶ Play Story</button>
                         <button onclick="stopAudio()" class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs cursor-pointer">⏹</button>
-                    </div>
+                    </div>` : ''}
                 </div>
                 <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 space-y-2">
                     <div class="text-xs font-extrabold uppercase tracking-wider text-amber-300">Context</div>
@@ -721,3 +746,4 @@
     </script>
 </body>
 </html>
+                                                                                                                                                                                                                                                          
